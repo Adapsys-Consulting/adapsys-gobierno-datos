@@ -5,7 +5,7 @@
 // Cada dimensión trae una escalera de `acciones` por nivel: la clave indica el
 // nivel que se busca ALCANZAR (n2 = de Inicial a Básico, ... n5 = a Optimizado).
 // ============================================================================
-import type { Banco, Modulo, NivelEscala } from '../lib/tipos';
+import type { Banco, NivelEscala } from '../lib/tipos';
 
 /**
  * Meta institucional mínima por dimensión: nivel 3 «Definido» (formalizado y documentado).
@@ -410,68 +410,12 @@ export const BANCO: Banco = {
   ],
 };
 
-/**
- * Módulo C — Sector salud (OPCIONAL). Preguntas sectoriales para instituciones de salud,
- * ancladas en el régimen reforzado de datos de salud (arts. 16 y 16 bis Ley 21.719),
- * la Ley 20.584 y el Reglamento sobre Fichas Clínicas (Decreto 41/2012), la EIPD (art. 15 ter)
- * y la interoperabilidad clínica. Se agrega al banco solo si la sesión marca `sectorSalud`.
- */
-export const MODULO_SALUD: Modulo = {
-  id: 'C',
-  titulo: 'Módulo C — Sector salud (opcional)',
-  tituloCorto: 'Módulo C · Sector salud',
-  descripcion: 'Preguntas sectoriales para instituciones de salud: régimen reforzado de datos de salud, ficha clínica e interoperabilidad clínica. Responder solo si la institución pertenece al sector salud.',
-  dimensiones: [
-    {
-      id: 'C1', nombre: 'Datos de salud y régimen reforzado', peso: 1.5, critica: true,
-      acciones: {
-        n2: 'Identificar dónde se tratan datos de salud, del perfil biológico y biométricos, y verificar que su uso responda a un fin sanitario y a una base de licitud.',
-        n3: 'Documentar, para cada tratamiento de datos de salud, el fin sanitario que lo habilita (art. 16 bis) y sus medidas reforzadas de seguridad; formalizar el deber de reserva y secreto del personal clínico.',
-        n4: 'Controlar periódicamente que no se traten datos de salud para fines ajenos a las leyes sanitarias ni datos recolectados en ámbitos laboral/educativo/de seguros sin autorización legal, midiendo accesos indebidos.',
-        n5: 'Minimizar de forma continua (anonimización/seudonimización por defecto en la analítica clínica) y anticipar riesgos como la reidentificación por cruce de fuentes de salud.',
-      },
-      preguntas: [
-        { id: 'C1.1', texto: 'Usamos los datos de salud y del perfil biológico solo para fines de salud (los que permiten las leyes sanitarias), y solo cuando una norma nos autoriza a tratarlos (art. 16 bis).' },
-        { id: 'C1.2', texto: 'No usamos datos de salud ni muestras biológicas que se hayan recogido en contextos laborales, educativos, deportivos, de seguros o de seguridad social, salvo que una ley lo permita expresamente (art. 16 bis).' },
-        { id: 'C1.3', texto: 'Protegemos los datos de salud, biométricos y del perfil biológico con medidas de seguridad más estrictas (cifrado, acceso restringido y registro de quién accede) y con cuidados adicionales para los datos de niños, niñas y adolescentes.' },
-      ],
-    },
-    {
-      id: 'C2', nombre: 'Ficha clínica y derechos del paciente (Ley 20.584)', peso: 1, critica: false,
-      acciones: {
-        n2: 'Identificar dónde están las fichas clínicas (en papel y electrónicas) y quién accede a ellas; cerrar los accesos evidentemente excesivos.',
-        n3: 'Aplicar el Reglamento sobre Fichas Clínicas (Decreto 41/2012): conservación mínima de 15 años desde la última atención, con custodia y trazabilidad; formalizar el procedimiento de acceso y entrega de copia según la Ley 20.584.',
-        n4: 'Medir el cumplimiento de las solicitudes de copia o rectificación de la ficha clínica (plazos y trazabilidad) y coordinarlas con el flujo ARCOP de la Ley 21.719 para no duplicar canales.',
-        n5: 'Automatizar donde aporte (solicitud y entrega de copia, verificación de identidad) y usar las solicitudes recibidas como señal para mejorar la calidad del registro clínico.',
-      },
-      preguntas: [
-        { id: 'C2.1', texto: 'Guardamos la ficha clínica al menos 15 años desde la última atención, como exige el Reglamento sobre Fichas Clínicas (Decreto 41/2012), con custodia y registro de quién accede a ella.' },
-        { id: 'C2.2', texto: 'Cuando un paciente pide ver o copiar su ficha clínica, respondemos según la Ley 20.584 y por el mismo canal con que atendemos los derechos de la Ley 21.719 (sin tener dos vías separadas).' },
-      ],
-    },
-    {
-      id: 'C3', nombre: 'Interoperabilidad clínica y datos de salud a gran escala', peso: 1, critica: false,
-      acciones: {
-        n2: 'Identificar las terminologías clínicas que se usan de hecho (CIE, SNOMED CT, códigos locales) y los tratamientos de datos de salud a gran escala (registros, listas de espera).',
-        n3: 'Adoptar estándares semánticos y de terminología clínica (HL7 FHIR, SNOMED CT, CIE-10/CIE-11) con un responsable de su gobierno, y exigir EIPD previa a los tratamientos masivos de datos de salud (art. 15 ter).',
-        n4: 'Medir la cobertura de codificación clínica estandarizada y la conformidad con los estándares; controlar que el uso secundario (investigación, estadística) pase por anonimización/seudonimización.',
-        n5: 'Avanzar hacia interoperabilidad semántica por diseño en la red asistencial (perfiles FHIR nacionales, mapeos terminológicos mantenidos) e incorporar técnicas avanzadas (privacidad diferencial, datos sintéticos) en el uso secundario.',
-      },
-      preguntas: [
-        { id: 'C3.1', texto: 'Usamos y mantenemos estándares clínicos comunes (HL7 FHIR, SNOMED CT, CIE-10/CIE-11) para que el dato clínico signifique lo mismo en los distintos establecimientos y sistemas de la red asistencial.' },
-        { id: 'C3.2', texto: 'Antes de iniciar un tratamiento masivo de datos de salud (registros nacionales, listas de espera, tamizajes, modelos predictivos) hacemos una Evaluación de Impacto (EIPD) (art. 15 ter).' },
-        { id: 'C3.3', texto: 'Cuando reutilizamos datos de salud para investigación, estadística o salud pública, lo hacemos con datos anonimizados o seudonimizados, cuidando que no se pueda reidentificar a las personas.' },
-      ],
-    },
-  ],
-};
-
-/** Banco activo según el sector: agrega el Módulo C (salud) si la sesión lo marca. */
-export function componerBanco(sectorSalud: boolean): Banco {
-  return { modulos: sectorSalud ? [...BANCO.modulos, MODULO_SALUD] : BANCO.modulos };
+/** Banco del instrumento (Módulos A + B). */
+export function componerBanco(): Banco {
+  return { modulos: BANCO.modulos };
 }
 
-/** Cuenta las preguntas de un banco cualquiera (para totales dinámicos con/sin Módulo C). */
+/** Cuenta las preguntas de un banco cualquiera . */
 export function contarPreguntasBanco(banco: Banco): number {
   return banco.modulos.reduce((n, m) => n + m.dimensiones.reduce((k, d) => k + d.preguntas.length, 0), 0);
 }

@@ -2,7 +2,7 @@ import type { Meta, Sesion } from '../lib/tipos';
 import { FUENTES, componerBanco, contarPreguntasBanco } from '../data/banco';
 import { contarRespondidas } from '../lib/scoring';
 import { etiquetaSesion } from '../lib/persistencia';
-import BrandMark from './BrandMark';
+import AdapsysMark from './AdapsysMark';
 import Leyenda from './Leyenda';
 
 interface PortadaProps {
@@ -30,10 +30,10 @@ export default function Portada({
   sesiones, activaId, total, dias,
   onNuevaSesion, onAbrirSesion, onEliminarSesion, onVerConsolidado,
 }: PortadaProps) {
-  const bancoDe = (s: Sesion) => componerBanco(!!s.meta.sectorSalud);
-  const conDatos = sesiones.filter((s) => contarRespondidas(bancoDe(s), s.respuestas) > 0);
+  const banco = componerBanco();
+  const conDatos = sesiones.filter((s) => contarRespondidas(banco, s.respuestas) > 0);
   const activaS = sesiones.find((s) => s.id === activaId);
-  const respondidasActiva = activaS ? contarRespondidas(bancoDe(activaS), activaS.respuestas) : 0;
+  const respondidasActiva = activaS ? contarRespondidas(banco, activaS.respuestas) : 0;
 
   return (
     <section className="view">
@@ -42,10 +42,10 @@ export default function Portada({
         <div className="hero-cover">
           <div className="hero-top">
             <div>
-              <div className="eyebrow">Diagnóstico de madurez · Sector público</div>
+              <div className="eyebrow">Diagnóstico de madurez</div>
               <h1>¿Qué tan preparada está tu institución para la Ley 21.719?</h1>
             </div>
-            <BrandMark variant="hero" eyebrow="Plataforma de" />
+            <AdapsysMark eyebrow="Plataforma por" />
           </div>
           <p className="hero-lede">
             Un instrumento estructurado y repetible para medir —en lenguaje claro— la madurez de tu institución
@@ -64,8 +64,8 @@ export default function Portada({
               <div className="l">preguntas · 45–60 min en reunión por área (15–20 min individual)</div>
             </div>
             <div className="hero-stat">
-              <div className="n">2<span style={{ fontSize: '18px', opacity: 0.6 }}>+1</span></div>
-              <div className="l">módulos: Ley 21.719 + Gobernanza, y salud opcional</div>
+              <div className="n">2</div>
+              <div className="l">módulos: preparación Ley 21.719 + gobernanza de datos (MGDE)</div>
             </div>
           </div>
         </div>
@@ -136,20 +136,6 @@ export default function Portada({
             </div>
           </div>
 
-          <label className="note" style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginTop: '16px', cursor: 'pointer' }}>
-            <input
-              type="checkbox"
-              checked={!!meta.sectorSalud}
-              onChange={(e) => onMeta('sectorSalud', e.target.checked)}
-              style={{ marginTop: '3px', flexShrink: 0 }}
-            />
-            <span>
-              🏥 <b>Esta institución pertenece al sector salud.</b> Agrega un <b>módulo sectorial opcional</b> (Módulo C):
-              régimen reforzado de datos de salud (art. 16 bis), ficha clínica (Ley 20.584 / Decreto 41/2012) e
-              interoperabilidad clínica. Déjalo sin marcar si no corresponde.
-            </span>
-          </label>
-
           <div style={{ marginTop: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             <button className="btn" onClick={onComenzar}>
               {respondidasActiva > 0 ? 'Continuar sesión →' : 'Comenzar diagnóstico →'}
@@ -187,8 +173,8 @@ export default function Portada({
               </thead>
               <tbody>
                 {sesiones.map((s, i) => {
-                  const n = contarRespondidas(bancoDe(s), s.respuestas);
-                  const tot = contarPreguntasBanco(bancoDe(s));
+                  const n = contarRespondidas(banco, s.respuestas);
+                  const tot = contarPreguntasBanco(banco);
                   const esActiva = s.id === activaId;
                   return (
                     <tr key={s.id} className={esActiva ? 'ses-activa' : undefined}>

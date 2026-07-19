@@ -26,3 +26,4 @@ datos/
 
 # Config local de Claude Code (el skill sí se publica en .claude/skills/)
 .claude/settings.local.json
+.vercel

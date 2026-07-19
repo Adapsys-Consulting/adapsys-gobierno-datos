@@ -78,8 +78,6 @@ export interface Meta {
   evaluador?: string;
   /** Quiénes participaron en la reunión de levantamiento. */
   participantes?: string;
-  /** La institución pertenece al sector salud: activa el Módulo C (preguntas sectoriales). */
-  sectorSalud?: boolean;
 }
 
 /** Una sesión de levantamiento: las respuestas de una reunión con un área/departamento. */

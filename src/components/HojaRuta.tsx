@@ -5,7 +5,7 @@ import { horizonteDe, esQuickWin, esEstructural, nivelDe, colorDe, fmt } from '.
 const GRUPOS: { h: '0-12' | '12-24' | '24-36'; titulo: string; desc: string }[] = [
   { h: '0-12', titulo: '0–12 meses — cerrar brechas críticas', desc: 'Deberes legales basales bajo la meta: deben alcanzar al menos el nivel 3 «Definido» a la brevedad (Ley 21.719 vigente el 1-dic-2026).' },
   { h: '12-24', titulo: '12–24 meses — cerrar las demás brechas', desc: 'Dimensiones bajo la meta institucional sin carácter crítico.' },
-  { h: '24-36', titulo: '24–36 meses — subir de nivel y consolidar', desc: 'Dimensiones ya en nivel «Definido» o superior: medición, control y mejora continua (el MGDE sugiere nivel Avanzado para instituciones de salud).' },
+  { h: '24-36', titulo: '24–36 meses — subir de nivel y consolidar', desc: 'Dimensiones ya en nivel «Definido» o superior: medición, control y mejora continua (el MGDE sugiere aspirar al nivel Avanzado en la gestión de datos).' },
 ];
 
 function Fila({ item }: { item: ItemPlan }) {

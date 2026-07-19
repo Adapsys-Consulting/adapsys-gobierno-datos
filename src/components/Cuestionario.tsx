@@ -5,7 +5,7 @@ import { contarRespondidas } from '../lib/scoring';
 import Leyenda from './Leyenda';
 
 interface CuestionarioProps {
-  /** Banco activo (incluye el Módulo C si la sesión es del sector salud). */
+  /** Banco del instrumento (Módulos A + B). */
   banco: Banco;
   respuestas: Respuestas;
   /** Nombre de la sesión activa (área/departamento), para no confundir sesiones. */

@@ -29,8 +29,6 @@ Es una herramienta web de **autodiagnóstico**: un cuestionario tipo Likert en l
   consentimiento, derechos ARCOP, EIPD, seguridad, brechas, encargados, transferencias, anonimización, cultura y cesiones.
 - **Módulo B — Gobernanza de datos / MGDE** (12 dimensiones, 32 preguntas): instancias, roles, estrategia, políticas,
   calidad, metadatos, arquitectura/interoperabilidad, seguridad, ciclo de vida, cultura, adopción y gobierno de IA.
-- **Módulo C — Sector salud** (opcional, 3 dimensiones, 8 preguntas): régimen reforzado (art. 16 bis), ficha clínica e
-  interoperabilidad clínica. Se activa solo si la institución marca que pertenece al sector salud.
 
 El banco de preguntas está documentado en [`docs/banco-preguntas.md`](docs/banco-preguntas.md) y es el espejo legible
 del código en [`src/data/banco.ts`](src/data/banco.ts).

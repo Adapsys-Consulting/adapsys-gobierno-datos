@@ -15,7 +15,7 @@ import {
   importarJSON,
 } from '../lib/persistencia';
 import { bajarSesiones, subirSesiones, borrarSesionRemota, fusionar } from '../lib/sync';
-import BrandMark from './BrandMark';
+import AdapsysMark from './AdapsysMark';
 import Portada from './Portada';
 import Cuestionario from './Cuestionario';
 import Resultados from './Resultados';
@@ -105,11 +105,9 @@ export default function App() {
   const activa = sesiones.find((s) => s.id === activaId) ?? sesiones[0] ?? null;
   const respuestas = activa?.respuestas ?? {};
   const meta = activa?.meta ?? {};
-  // Banco activo: agrega el Módulo C (salud) si la sesión activa lo marca. Para el
-  // consolidado, se incluye si CUALQUIER sesión es del sector salud.
-  const bancoActivo = useMemo(() => componerBanco(!!meta.sectorSalud), [meta.sectorSalud]);
-  const bancoCons = useMemo(() => componerBanco(sesiones.some((s) => !!s.meta.sectorSalud)), [sesiones]);
-  const totalActivo = contarPreguntasBanco(bancoActivo);
+  // Banco del instrumento (Módulos A + B). Único y estable.
+  const banco = useMemo(() => componerBanco(), []);
+  const totalActivo = contarPreguntasBanco(banco);
 
   const mutarActiva = (fn: (s: Sesion) => Sesion) => {
     setSesiones((prev) =>
@@ -150,7 +148,7 @@ export default function App() {
     const idx = sesiones.findIndex((x) => x.id === id);
     const s = sesiones[idx];
     if (!s) return;
-    const n = contarRespondidas(componerBanco(!!s.meta.sectorSalud), s.respuestas);
+    const n = contarRespondidas(banco, s.respuestas);
     const et = etiquetaSesion(s, idx);
     if (!window.confirm(`¿Eliminar la sesión «${et}» (${n} respuestas)? Esta acción no se puede deshacer.`)) return;
     if (bd === 'on') void borrarSesionRemota(id);
@@ -202,7 +200,7 @@ export default function App() {
       <header className="topbar no-print">
         <div className="wrap">
           <div className="tb-brand">
-            <BrandMark variant="bar" />
+            <AdapsysMark variant="bar" />
             <span className="tb-div" aria-hidden="true" />
             <span className="tb-title">
               Diagnóstico de Gobernanza de Datos
@@ -244,7 +242,7 @@ export default function App() {
       {vista === 'cuestionario' && (
         <Cuestionario
           key={activa?.id ?? 'sin-sesion'}
-          banco={bancoActivo}
+          banco={banco}
           respuestas={respuestas}
           etiqueta={etiquetaActiva}
           guardadoEn={guardadoEn}
@@ -257,24 +255,24 @@ export default function App() {
 
       {vista === 'resultados' && (
         <Resultados
-          banco={bancoActivo}
+          banco={banco}
           respuestas={respuestas}
           meta={meta}
           onEditar={() => irVista('cuestionario')}
           onPrint={() => window.print()}
-          onCSV={() => exportarCSV(bancoActivo, respuestas, meta)}
+          onCSV={() => exportarCSV(banco, respuestas, meta)}
           onJSON={() => exportarJSON(respuestas, meta)}
         />
       )}
 
       {vista === 'consolidado' && (
         <Consolidado
-          banco={bancoCons}
+          banco={banco}
           sesiones={sesiones}
           onVolver={() => irVista('portada')}
           onImportarClick={() => pedirImportar('consolidado')}
           onAbrirSesion={abrirSesion}
-          onCSV={(conDatos) => exportarConsolidadoCSV(bancoCons, conDatos)}
+          onCSV={(conDatos) => exportarConsolidadoCSV(banco, conDatos)}
           onPrint={() => window.print()}
         />
       )}
