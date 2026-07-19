@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro';
+import App from '../components/App';
+---
+
+<Layout title="Adapsys · Diagnóstico de Gobernanza de Datos — Ley 21.719 + MGDE">
+  {/* Toda la interacción vive en el navegador: se hidrata solo en el cliente. */}
+  <App client:only="react" />
+</Layout>
